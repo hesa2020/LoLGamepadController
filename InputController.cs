@@ -79,6 +79,16 @@ namespace LoLGamepadController
             inputSimulator.Mouse.LeftButtonUp();
         }
 
+        public static void MiddleButtonDown()
+        {
+            inputSimulator.Mouse.MiddleButtonDown();
+        }
+
+        public static void MiddleButtonUp()
+        {
+            inputSimulator.Mouse.MiddleButtonUp();
+        }
+
         public static void RightButtonDown()
         {
             inputSimulator.Mouse.RightButtonDown();

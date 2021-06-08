@@ -10,6 +10,7 @@ namespace LoLGamepadController
         private bool IsShopOpen = false;
         private bool HoldingPing = false;
         private bool MinimapMode = false;
+        private bool LockedCamera = false;
         private Point HoldingPingPosition = Point.Empty;
         private long LastMovementInput = 0;
         private long LastScrollInput = 0;
@@ -138,16 +139,8 @@ namespace LoLGamepadController
                 break;
                 case GamepadButtonFlags.X:
                 {
-                    if(InputController.LeftTriggerDown)
-                    {
-                        //Item 1
-                        InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.VK_1);
-                    }
-                    else
-                    {
-                        //Q
-                        InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.VK_Q);
-                    }
+                    //Q
+                    InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.VK_Q);
                 }
                 break;
                 case GamepadButtonFlags.A:
@@ -158,45 +151,21 @@ namespace LoLGamepadController
                     }
                     else
                     {
-                        if (InputController.LeftTriggerDown)
-                        {
-                            //Item 2
-                            InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.VK_2);
-                        }
-                        else
-                        {
-                            //W
-                            InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.VK_W);
-                        }
+                        //W
+                        InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.VK_W);
                     }
                 }
                 break;
                 case GamepadButtonFlags.B:
                 {
-                    if (InputController.LeftTriggerDown)
-                    {
-                        //Item 3
-                        InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.VK_3);
-                    }
-                    else
-                    {
-                        //E
-                        InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.VK_E);
-                    }
+                    //E
+                    InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.VK_E);
                 }
                 break;
                 case GamepadButtonFlags.Y:
                 {
-                    if (InputController.LeftTriggerDown)
-                    {
-                        //Item 4
-                        InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.VK_4);
-                    }
-                    else
-                    {
-                        //R
-                        InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.VK_R);
-                    }
+                    //R
+                    InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.VK_R);
                 }
                 break;
                 case GamepadButtonFlags.DPadLeft:
@@ -204,7 +173,9 @@ namespace LoLGamepadController
                     if (InputController.LeftTriggerDown)
                     {
                         //Missing ping
-                        InputController.SendKey(WindowsInput.Native.VirtualKeyCode.VK_H);
+                        //InputController.SendKey(WindowsInput.Native.VirtualKeyCode.VK_H);
+                        //Item 1
+                        InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.VK_1);
                     }
                     else if(!MinimapMode)
                     {
@@ -218,7 +189,9 @@ namespace LoLGamepadController
                     if (InputController.LeftTriggerDown)
                     {
                         //Danger ping
-                        InputController.SendVClick();
+                        //InputController.SendVClick();
+                        //Item 4
+                        InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.VK_4);
                     }
                     else if(!MinimapMode)
                     {
@@ -232,7 +205,9 @@ namespace LoLGamepadController
                     if (InputController.LeftTriggerDown)
                     {
                         //OnMyWay ping
-                        InputController.SendKeyShift(WindowsInput.Native.VirtualKeyCode.VK_V);
+                        //InputController.SendKeyShift(WindowsInput.Native.VirtualKeyCode.VK_V);
+                        //Item 3
+                        InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.VK_3);
                     }
                     else
                     {
@@ -245,11 +220,14 @@ namespace LoLGamepadController
                 {
                     if (InputController.LeftTriggerDown)
                     {
-                        InputController.SendKey(WindowsInput.Native.VirtualKeyCode.VK_K);
+                        //InputController.SendKey(WindowsInput.Native.VirtualKeyCode.VK_K);
+                        //Item 2
+                        InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.VK_2);
                     }
                     else if(!MinimapMode)
                     {
                         //Y
+                        LockedCamera = !LockedCamera;
                         InputController.SendKey(WindowsInput.Native.VirtualKeyCode.VK_Y);
                     }
                 }
@@ -295,6 +273,9 @@ namespace LoLGamepadController
                 {
                     if (!IsShopOpen && !MinimapMode)
                     {
+                        //Q
+                        InputController.SendKeyDown(WindowsInput.Native.VirtualKeyCode.VK_Q);
+
                         if (InputController.LeftTriggerDown)
                         {
                             //Item 1
@@ -302,8 +283,6 @@ namespace LoLGamepadController
                         }
                         else
                         {
-                            //Q
-                            InputController.SendKeyDown(WindowsInput.Native.VirtualKeyCode.VK_Q);
                         }
                     }
                 }
@@ -316,6 +295,9 @@ namespace LoLGamepadController
                     }
                     else if(!MinimapMode)
                     {
+                        //W
+                        InputController.SendKeyDown(WindowsInput.Native.VirtualKeyCode.VK_W);
+
                         if (InputController.LeftTriggerDown)
                         {
                             //Item 2
@@ -323,8 +305,6 @@ namespace LoLGamepadController
                         }
                         else
                         {
-                            //W
-                            InputController.SendKeyDown(WindowsInput.Native.VirtualKeyCode.VK_W);
                         }
                     }
                 }
@@ -333,6 +313,9 @@ namespace LoLGamepadController
                 {
                     if (!IsShopOpen && !MinimapMode)
                     {
+                        //E
+                        InputController.SendKeyDown(WindowsInput.Native.VirtualKeyCode.VK_E);
+
                         if (InputController.LeftTriggerDown)
                         {
                             //Item 3
@@ -340,8 +323,6 @@ namespace LoLGamepadController
                         }
                         else
                         {
-                            //E
-                            InputController.SendKeyDown(WindowsInput.Native.VirtualKeyCode.VK_E);
                         }
                     }
                 }
@@ -350,15 +331,31 @@ namespace LoLGamepadController
                 {
                     if (!IsShopOpen && !MinimapMode)
                     {
+                        //R
+                        InputController.SendKeyDown(WindowsInput.Native.VirtualKeyCode.VK_R);
+                    }
+                }
+                break;
+                case GamepadButtonFlags.DPadLeft:
+                {
+                    if (!IsShopOpen && !MinimapMode)
+                    {
                         if (InputController.LeftTriggerDown)
                         {
-                            //Item 4
-                            InputController.SendKeyDown(WindowsInput.Native.VirtualKeyCode.VK_4);
+                            //Item 1
+                            InputController.SendKeyDown(WindowsInput.Native.VirtualKeyCode.VK_1);
                         }
-                        else
+                    }
+                }
+                break;
+                case GamepadButtonFlags.DPadDown:
+                {
+                    if (!IsShopOpen && !MinimapMode)
+                    {
+                        if (InputController.LeftTriggerDown)
                         {
-                            //R
-                            InputController.SendKeyDown(WindowsInput.Native.VirtualKeyCode.VK_R);
+                            //Item 2
+                            InputController.SendKeyDown(WindowsInput.Native.VirtualKeyCode.VK_2);
                         }
                     }
                 }
@@ -367,18 +364,23 @@ namespace LoLGamepadController
                 {
                     if (!IsShopOpen && !MinimapMode)
                     {
-                        //Alt
-                        /*if(HoldingPing == false)
+                        if (InputController.LeftTriggerDown)
                         {
-                            HoldingPing = true;
-                            if(InputController.GetCursorPos(out Point position))
-                            {
-                                HoldingPingPosition = Cursor.Position;
-                                //HoldingPingPosition = position;
-                                InputController.SendKeyDown(WindowsInput.Native.VirtualKeyCode.MENU);
-                                InputController.LeftButtonDown();
-                            }
-                        }*/
+                            //Item 3
+                            InputController.SendKeyDown(WindowsInput.Native.VirtualKeyCode.VK_3);
+                        }
+                    }
+                }
+                break;
+                case GamepadButtonFlags.DPadUp:
+                {
+                    if (!IsShopOpen && !MinimapMode)
+                    {
+                        if (InputController.LeftTriggerDown)
+                        {
+                            //Item 4
+                            InputController.SendKeyDown(WindowsInput.Native.VirtualKeyCode.VK_4);
+                        }
                     }
                 }
                 break;
@@ -400,95 +402,127 @@ namespace LoLGamepadController
                     }
                 }
                 break;
-                //case GamepadButtonFlags.A:
-                //{
-                //    //Right
-                //    InputController.SendKeyDown(WindowsInput.Native.VirtualKeyCode.RIGHT);
-                //    Console.WriteLine("Sending keydown [Right]");
-                //}
-                //break;
             }
         }
 
+        private bool middleDown = false;
         public void MoveCamera(float x, float y)
         {
-            if (x <= -25f)
+            if (LockedCamera)
             {
-                if(movingRight)
+                if (x <= -25f)
                 {
-                    movingRight = false;
-                    InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.RIGHT);
+                    if (movingRight)
+                    {
+                        movingRight = false;
+                        InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.RIGHT);
+                    }
+                    if (!movingLeft)
+                    {
+                        movingLeft = true;
+                        InputController.SendKeyDown(WindowsInput.Native.VirtualKeyCode.LEFT);
+                    }
                 }
-                if(!movingLeft)
+                else if (x >= 25f)
                 {
-                    movingLeft = true;
-                    InputController.SendKeyDown(WindowsInput.Native.VirtualKeyCode.LEFT);
+                    if (movingLeft)
+                    {
+                        movingLeft = false;
+                        InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.LEFT);
+                    }
+                    if (!movingRight)
+                    {
+                        movingRight = true;
+                        InputController.SendKeyDown(WindowsInput.Native.VirtualKeyCode.RIGHT);
+                    }
                 }
-            }
-            else if(x >= 25f)
-            {
-                if (movingLeft)
+                else
                 {
-                    movingLeft = false;
-                    InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.LEFT);
+                    if (movingRight)
+                    {
+                        movingRight = false;
+                        InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.RIGHT);
+                    }
+                    if (movingLeft)
+                    {
+                        movingLeft = false;
+                        InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.LEFT);
+                    }
                 }
-                if (!movingRight)
+                //
+                if (y <= -25f)
                 {
-                    movingRight = true;
-                    InputController.SendKeyDown(WindowsInput.Native.VirtualKeyCode.RIGHT);
+                    if (movingUp)
+                    {
+                        movingUp = false;
+                        InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.UP);
+                    }
+                    if (!movingDown)
+                    {
+                        movingDown = true;
+                        InputController.SendKeyDown(WindowsInput.Native.VirtualKeyCode.DOWN);
+                    }
+                }
+                else if (y >= 25f)
+                {
+                    if (movingDown)
+                    {
+                        movingDown = false;
+                        InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.DOWN);
+                    }
+                    if (!movingUp)
+                    {
+                        movingUp = true;
+                        InputController.SendKeyDown(WindowsInput.Native.VirtualKeyCode.UP);
+                    }
+                }
+                else
+                {
+                    if (movingDown)
+                    {
+                        movingDown = false;
+                        InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.DOWN);
+                    }
+                    if (movingUp)
+                    {
+                        movingUp = false;
+                        InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.UP);
+                    }
                 }
             }
             else
             {
-                if (movingRight)
+                var cursorPos = new Point(Cursor.Position.X, Cursor.Position.Y);
+                int h = (int)(0.35f * x);
+                int v = (int)(0.35f * y);
+                if ((h < -3 || h > 3) || (v < -3 || v > 3))
                 {
-                    movingRight = false;
-                    InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.RIGHT);
+                    if(middleDown == false)
+                    {
+                        //Press it up
+                        middleDown = true;
+                        InputController.MiddleButtonDown();
+                    }
+                    bool inverted = false;
+                    if(inverted)
+                    {
+                        cursorPos.X -= (int)h;
+                        cursorPos.Y += (int)v;
+                    }
+                    else
+                    {
+                        cursorPos.X += (int)h;
+                        cursorPos.Y -= (int)v;
+                    }
+
+                    if (cursorPos != Cursor.Position)
+                        InputController.SetCursorPosition(cursorPos.X, cursorPos.Y);
                 }
-                if (movingLeft)
+                else if(middleDown)
                 {
-                    movingLeft = false;
-                    InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.LEFT);
-                }
-            }
-            //
-            if (y <= -25f)
-            {
-                if (movingUp)
-                {
-                    movingUp = false;
-                    InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.UP);
-                }
-                if (!movingDown)
-                {
-                    movingDown = true;
-                    InputController.SendKeyDown(WindowsInput.Native.VirtualKeyCode.DOWN);
-                }
-            }
-            else if (y >= 25f)
-            {
-                if (movingDown)
-                {
-                    movingDown = false;
-                    InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.DOWN);
-                }
-                if (!movingUp)
-                {
-                    movingUp = true;
-                    InputController.SendKeyDown(WindowsInput.Native.VirtualKeyCode.UP);
-                }
-            }
-            else
-            {
-                if (movingDown)
-                {
-                    movingDown = false;
-                    InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.DOWN);
-                }
-                if (movingUp)
-                {
-                    movingUp = false;
-                    InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.UP);
+                    //Free it up
+                    middleDown = false;
+                    InputController.MiddleButtonUp();
                 }
             }
         }
@@ -565,6 +599,7 @@ namespace LoLGamepadController
 
         public void DoAim(float x, float y)
         {
+            if (middleDown) return;
             var cursorPos = new Point((Screen.PrimaryScreen.Bounds.Width / 2) + Screen.PrimaryScreen.Bounds.X, (Screen.PrimaryScreen.Bounds.Height / 2) + Screen.PrimaryScreen.Bounds.Y);
 
             cursorPos.X += (int)(3 * x);
