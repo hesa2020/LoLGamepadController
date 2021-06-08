@@ -16,15 +16,6 @@ Right trigger = Right Click
 Left trigger + Right trigger = Shift + Right Click
 
 
-Left trigger + X = 1
-
-Left trigger + A = 2
-
-Left trigger + B = 3
-
-Left trigger + Y = 4
-
-
 Left Shoulder = D
 
 Right Shoulder = F
@@ -42,13 +33,13 @@ Dpad Right = Quick T press ( Middle Emote )
 
 Dpad Left = Ctrl+4 ( Laugh )
 
-Left trigger + Dpad Up = Danger Ping (Must be bound to V & Click)
+Left trigger + Dpad Up = Item 4
 
-Left trigger + Dpad Down = Assist Me Ping (Must be bound to K)
+Left trigger + Dpad Down = Item 2
 
-Left trigger + Dpad Right = On My Way Ping (Must be bound to Shift+V)
+Left trigger + Dpad Right = Item 3
 
-Left trigger + Dpad Left = Enemy Missing Ping (Must be bound to H)
+Left trigger + Dpad Left = Item 1
 
 
 Left Joystick button = Control (Used for quick leveling abilities)
