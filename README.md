@@ -51,6 +51,8 @@ Left trigger + Dpad Right = On My Way Ping (Must be bound to Shift+V)
 Left trigger + Dpad Left = Enemy Missing Ping (Must be bound to H)
 
 
+Left Joystick button = Control (Used for quick leveling abilities)
+
 Left Joystick = Rotate cursor arround screen center / Move the mouse freely
 
 Right Joystick = Move the camera using the arrow keys.
