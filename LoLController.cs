@@ -9,51 +9,87 @@ namespace LoLGamepadController
     {
         private bool IsShopOpen = false;
         private bool HoldingPing = false;
+        private bool MinimapMode = false;
         private Point HoldingPingPosition = Point.Empty;
         private long LastMovementInput = 0;
+        private long LastScrollInput = 0;
         private bool movingLeft = false;
         private bool movingRight = false;
         private bool movingUp = false;
         private bool movingDown = false;
+        private float MinimapWidth = 0;
+        private float MinimapHeight = 0;
+
+        private float MinimapLeftUpCornerX = 0;
+        private float MinimapLeftUpCornerY = 0;
+
+        private float MinimapBottomRightCornerX = 0;
+        private float MinimapBottomRightCornerY = 0;
+
+        private float MinimapCenterX = 0;
+        private float MinimapCenterY = 0;
 
         public LoLController()
         {
             InputController.OnButtonDown += InputController_OnButtonDown;
             InputController.OnButtonUp += InputController_OnButtonUp;
+            //This is using the default minimap scale of 0.33 at 1920x1080
+            MinimapWidth = Screen.PrimaryScreen.Bounds.Width / 7.559055118110236f;
+            MinimapHeight = MinimapWidth;
+            //
+            MinimapLeftUpCornerX = Screen.PrimaryScreen.Bounds.Width * 0.862f;
+            MinimapLeftUpCornerY = Screen.PrimaryScreen.Bounds.Height * 0.7537f;
+            //
+            MinimapBottomRightCornerX = MinimapLeftUpCornerX + MinimapWidth;
+            MinimapBottomRightCornerY = MinimapLeftUpCornerY + MinimapHeight;
+
+            MinimapCenterX = MinimapLeftUpCornerX + (MinimapWidth / 2);
+            MinimapCenterY = MinimapLeftUpCornerY + (MinimapHeight / 2);
         }
 
         public void Tick()
         {
-            HandleJoystickLeft();
+            if(!MinimapMode) HandleJoystickLeft();
             HandleJoystickRight();
         }
 
         private void HandleJoystickLeft()
         {
-            float xx = InputController.JoystickLeftX / 32767f;
-            float yy = InputController.JoystickLeftY / 32767f;
+            float xx = (InputController.JoystickLeftX / 32767f) * 100;
+            float yy = (InputController.JoystickLeftY / 32767f) * 100;
             if (IsShopOpen)
             {
                 FreeMouse(xx, yy);
             }
             else
             {
-                if (!HoldingPing)
+                //if (!HoldingPing)
                     DoAim(xx, yy);
             }
         }
 
         private void HandleJoystickRight()
         {
-            float xx = InputController.JoystickRightX / 32767f;
-            float yy = InputController.JoystickRightY / 32767f;
-            if (HoldingPing)
+            float xx = (InputController.JoystickRightX / 32767f) * 100;
+            float yy = (InputController.JoystickRightY / 32767f) * 100;
+            if (IsShopOpen)
             {
-                DoPing(xx, yy);
+                DoScroll(xx, yy);
             }
             else
             {
-                MoveCamera(xx, yy);
+                if (MinimapMode)
+                {
+                    MoveMinimap(xx, yy);
+                }
+                /*else if (HoldingPing)
+                {
+                    //DoPing(xx, yy);
+                }*/
+                else
+                {
+                    MoveCamera(xx, yy);
+                }
             }
         }
 
@@ -63,14 +99,33 @@ namespace LoLGamepadController
             {
                 case GamepadButtonFlags.LeftThumb:
                 {
-                    //Ctrl
-                    InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.LCONTROL);
+                    if(!IsShopOpen && !MinimapMode)
+                        //Ctrl
+                        InputController.SendKeyUp(WindowsInput.Native.VirtualKeyCode.LCONTROL);
+                }
+                break;
+                case GamepadButtonFlags.RightThumb:
+                {
+                    MinimapMode = !MinimapMode;
+                    if (MinimapMode)
+                    {
+                        //Move mouse over the minimap center.
+                        InputController.SetCursorPosition((int)MinimapCenterX, (int)MinimapCenterY);
+                        //Left mouse down...
+                        InputController.LeftButtonDown();
+                    }
+                    else
+                    {
+                        //Release left mouse
+                        InputController.LeftButtonUp();
+                    }
                 }
                 break;
                 case GamepadButtonFlags.Start:
                 {
                     //Shop
                     IsShopOpen = !IsShopOpen;
+                    if (IsShopOpen) MinimapMode = false;
                     InputController.SendKey(WindowsInput.Native.VirtualKeyCode.VK_P);
                 }
                 break;
@@ -151,7 +206,7 @@ namespace LoLGamepadController
                         //Missing ping
                         InputController.SendKey(WindowsInput.Native.VirtualKeyCode.VK_H);
                     }
-                    else
+                    else if(!MinimapMode)
                     {
                         //T
                         InputController.SendKey(WindowsInput.Native.VirtualKeyCode.VK_T);
@@ -165,7 +220,7 @@ namespace LoLGamepadController
                         //Danger ping
                         InputController.SendVClick();
                     }
-                    else
+                    else if(!MinimapMode)
                     {
                         //B
                         InputController.SendKey(WindowsInput.Native.VirtualKeyCode.VK_B);
@@ -192,7 +247,7 @@ namespace LoLGamepadController
                     {
                         InputController.SendKey(WindowsInput.Native.VirtualKeyCode.VK_K);
                     }
-                    else
+                    else if(!MinimapMode)
                     {
                         //Y
                         InputController.SendKey(WindowsInput.Native.VirtualKeyCode.VK_Y);
@@ -238,7 +293,7 @@ namespace LoLGamepadController
                 break;
                 case GamepadButtonFlags.X:
                 {
-                    if (!IsShopOpen)
+                    if (!IsShopOpen && MinimapMode)
                     {
                         if (InputController.LeftTriggerDown)
                         {
@@ -259,7 +314,7 @@ namespace LoLGamepadController
                     {
                         InputController.LeftButtonDown();
                     }
-                    else
+                    else if(!MinimapMode)
                     {
                         if (InputController.LeftTriggerDown)
                         {
@@ -276,7 +331,7 @@ namespace LoLGamepadController
                 break;
                 case GamepadButtonFlags.B:
                 {
-                    if (!IsShopOpen)
+                    if (!IsShopOpen && !MinimapMode)
                     {
                         if (InputController.LeftTriggerDown)
                         {
@@ -293,7 +348,7 @@ namespace LoLGamepadController
                 break;
                 case GamepadButtonFlags.Y:
                 {
-                    if (!IsShopOpen)
+                    if (!IsShopOpen && !MinimapMode)
                     {
                         if (InputController.LeftTriggerDown)
                         {
@@ -310,7 +365,7 @@ namespace LoLGamepadController
                 break;
                 case GamepadButtonFlags.DPadRight:
                 {
-                    if (!IsShopOpen)
+                    if (!IsShopOpen && !MinimapMode)
                     {
                         //Alt
                         /*if(HoldingPing == false)
@@ -357,7 +412,7 @@ namespace LoLGamepadController
 
         public void MoveCamera(float x, float y)
         {
-            if (x <= -0.25f)
+            if (x <= -25f)
             {
                 if(movingRight)
                 {
@@ -370,7 +425,7 @@ namespace LoLGamepadController
                     InputController.SendKeyDown(WindowsInput.Native.VirtualKeyCode.LEFT);
                 }
             }
-            else if(x >= 0.25f)
+            else if(x >= 25f)
             {
                 if (movingLeft)
                 {
@@ -397,7 +452,7 @@ namespace LoLGamepadController
                 }
             }
             //
-            if (y <= -0.25f)
+            if (y <= -25f)
             {
                 if (movingUp)
                 {
@@ -410,7 +465,7 @@ namespace LoLGamepadController
                     InputController.SendKeyDown(WindowsInput.Native.VirtualKeyCode.DOWN);
                 }
             }
-            else if (y >= 0.25f)
+            else if (y >= 25f)
             {
                 if (movingDown)
                 {
@@ -438,17 +493,36 @@ namespace LoLGamepadController
             }
         }
 
-        public void MoveMinimap()
+        public T Clamp<T>(T val, T min, T max) where T : IComparable<T>
         {
-            //TODO...
+            if (val.CompareTo(min) < 0) return min;
+            else if (val.CompareTo(max) > 0) return max;
+            else return val;
+        }
+
+        public void MoveMinimap(float x, float y)
+        {
+            var cursorPos = new Point(Cursor.Position.X, Cursor.Position.Y);
+
+            int h = (int)(0.5f * x);
+            int v = (int)(0.5f * y);
+
+            cursorPos.X += h;
+            cursorPos.Y -= v;
+
+            cursorPos.X = Clamp(cursorPos.X, (int)MinimapLeftUpCornerX, (int)MinimapBottomRightCornerX);
+            cursorPos.Y = Clamp(cursorPos.Y, (int)MinimapLeftUpCornerY, (int)MinimapBottomRightCornerY);
+
+            if (cursorPos != Cursor.Position)
+                InputController.SetCursorPosition(cursorPos.X, cursorPos.Y);
         }
 
         public void FreeMouse(float x, float y)
         {
             var cursorPos = new Point(Cursor.Position.X, Cursor.Position.Y);
 
-            float h = 25 * x * 1;
-            float v = 25 * y * 1;
+            int h = (int)(0.25f * x);
+            int v = (int)(0.25f * y);
 
             cursorPos.X += (int)h;
             cursorPos.Y -= (int)v;
@@ -457,26 +531,30 @@ namespace LoLGamepadController
                 InputController.SetCursorPosition(cursorPos.X, cursorPos.Y);
         }
 
+        public void DoScroll(float x, float y)
+        {
+            if (Environment.TickCount - LastScrollInput > 150)
+            {
+                LastScrollInput = Environment.TickCount;
+                if (y <= -25)
+                {
+                    InputController.ScrollUp();
+                }
+                else if (y >= 25)
+                {
+                    InputController.ScrollDown();
+                }
+            }
+        }
+
         public void DoAim(float x, float y)
         {
             var cursorPos = new Point((Screen.PrimaryScreen.Bounds.Width / 2) + Screen.PrimaryScreen.Bounds.X, (Screen.PrimaryScreen.Bounds.Height / 2) + Screen.PrimaryScreen.Bounds.Y);
-            if (x <= -0.15f)
-            {
-                cursorPos.X += (int)(300 * x);
-            }
-            else if (x >= 0.15f)
-            {
-                cursorPos.X += (int)(300 * x);
-            }
-            if (y <= -0.15f)
-            {
-                cursorPos.Y -= (int)(300 * y);
-            }
-            else if (y >= 0.15f)
-            {
-                cursorPos.Y -= (int)(300 * y);
-            }
-            if(Cursor.Position != cursorPos)
+
+            cursorPos.X += (int)(3 * x);
+            cursorPos.Y -= (int)(3 * y);
+
+            if (Cursor.Position != cursorPos)
                 InputController.SetCursorPosition(cursorPos.X, cursorPos.Y);
             if (InputController.RightTriggerDown)
             {

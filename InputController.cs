@@ -141,5 +141,15 @@ namespace LoLGamepadController
         {
             inputSimulator.Mouse.MoveMouseTo(x, y);
         }
+
+        public static void ScrollUp()
+        {
+            inputSimulator.Mouse.VerticalScroll(-1);
+        }
+
+        public static void ScrollDown()
+        {
+            inputSimulator.Mouse.VerticalScroll(1);
+        }
     }
 }
