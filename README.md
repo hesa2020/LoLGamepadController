@@ -33,6 +33,18 @@ Dpad Up = Recall
 
 Dpad Down = Toggle Cam Lock
 
+Dpad Right = Quick T press ( Middle Emote )
+
+Dpad Left = Ctrl+4 ( Laugh )
+
+Left trigger + Dpad Up = Danger Ping (Must be bound to V & Click)
+
+Left trigger + Dpad Down = Assist Me Ping (Must be bound to K)
+
+Left trigger + Dpad Right = On My Way Ping (Must be bound to Shift+V)
+
+Left trigger + Dpad Left = Enemy Missing Ping (Must be bound to H)
+
 
 Left Joystick = Rotate cursor arround screen center / Move the mouse freely
 
