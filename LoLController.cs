@@ -293,7 +293,7 @@ namespace LoLGamepadController
                 break;
                 case GamepadButtonFlags.X:
                 {
-                    if (!IsShopOpen && MinimapMode)
+                    if (!IsShopOpen && !MinimapMode)
                     {
                         if (InputController.LeftTriggerDown)
                         {
@@ -504,8 +504,8 @@ namespace LoLGamepadController
         {
             var cursorPos = new Point(Cursor.Position.X, Cursor.Position.Y);
 
-            int h = (int)(0.5f * x);
-            int v = (int)(0.5f * y);
+            int h = (int)(0.035f * x);
+            int v = (int)(0.035f * y);
 
             cursorPos.X += h;
             cursorPos.Y -= v;
@@ -515,6 +515,22 @@ namespace LoLGamepadController
 
             if (cursorPos != Cursor.Position)
                 InputController.SetCursorPosition(cursorPos.X, cursorPos.Y);
+            if (InputController.RightTriggerDown)
+            {
+                //Check when was last time sent...
+                if (Environment.TickCount - LastMovementInput > 150)
+                {
+                    LastMovementInput = Environment.TickCount;
+                    if (InputController.LeftTriggerDown)
+                    {
+                        InputController.SendShiftRightClick();
+                    }
+                    else
+                    {
+                        InputController.RightClick();
+                    }
+                }
+            }
         }
 
         public void FreeMouse(float x, float y)
