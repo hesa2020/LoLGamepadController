@@ -48,5 +48,5 @@ Left Joystick = Rotate cursor arround screen center / Move the mouse freely
 
 Right Joystick button = Toggle the Minimap Mode
 
-Right Joystick = Move the camera using the arrow keys / Move the minimap camera (In Minimap Mode) / Scrolling in the shop window
+Right Joystick = Move the camera using the arrow keys (Old) / Move the camera using middle mouse button (New) / Move the minimap camera (In Minimap Mode) / Scrolling in the shop window
 
