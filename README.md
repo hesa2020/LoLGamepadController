@@ -11,6 +11,11 @@ B = E
 Y = Z
 
 
+Right trigger = Right Click
+
+Left trigger + Right trigger = Shift + Right Click
+
+
 Left trigger + X = 1
 
 Left trigger + A = 2
