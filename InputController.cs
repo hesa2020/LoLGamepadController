@@ -59,6 +59,16 @@ namespace LoLGamepadController
             });
         }
 
+        public static void SendKeyShift(VirtualKeyCode key)
+        {
+            inputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.SHIFT, key);
+        }
+
+        public static void SendKeyCtrl(VirtualKeyCode key)
+        {
+            inputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.LCONTROL, key);
+        }
+
         public static void LeftButtonDown()
         {
             inputSimulator.Mouse.LeftButtonDown();
@@ -97,6 +107,20 @@ namespace LoLGamepadController
         public static void RightClick()
         {
             inputSimulator.Mouse.RightButtonClick();
+        }
+
+        public static void SendVClick()
+        {
+            Task.Factory.StartNew(async () =>
+            {
+                inputSimulator.Keyboard.KeyDown(VirtualKeyCode.VK_V);
+                await Task.Delay(10);
+                inputSimulator.Mouse.LeftButtonDown();
+                await Task.Delay(35);
+                inputSimulator.Mouse.LeftButtonUp();
+                await Task.Delay(10);
+                inputSimulator.Keyboard.KeyUp(VirtualKeyCode.VK_V);
+            });
         }
 
         public static void SendShiftRightClick()

@@ -144,16 +144,59 @@ namespace LoLGamepadController
                     }
                 }
                 break;
+                case GamepadButtonFlags.DPadLeft:
+                {
+                    if (InputController.LeftTriggerDown)
+                    {
+                        //Missing ping
+                        InputController.SendKey(WindowsInput.Native.VirtualKeyCode.VK_H);
+                    }
+                    else
+                    {
+                        //T
+                        InputController.SendKey(WindowsInput.Native.VirtualKeyCode.VK_T);
+                    }
+                }
+                break;
                 case GamepadButtonFlags.DPadUp:
                 {
-                    //B
-                    InputController.SendKey(WindowsInput.Native.VirtualKeyCode.VK_B);
+                    if (InputController.LeftTriggerDown)
+                    {
+                        //Danger ping
+                        InputController.SendVClick();
+                    }
+                    else
+                    {
+                        //B
+                        InputController.SendKey(WindowsInput.Native.VirtualKeyCode.VK_B);
+                    }
+                }
+                break;
+                case GamepadButtonFlags.DPadRight:
+                {
+                    if (InputController.LeftTriggerDown)
+                    {
+                        //OnMyWay ping
+                        InputController.SendKeyShift(WindowsInput.Native.VirtualKeyCode.VK_V);
+                    }
+                    else
+                    {
+                        //Ctrl+4
+                        InputController.SendKeyCtrl(WindowsInput.Native.VirtualKeyCode.VK_4);
+                    }
                 }
                 break;
                 case GamepadButtonFlags.DPadDown:
                 {
-                    //Y
-                    InputController.SendKey(WindowsInput.Native.VirtualKeyCode.VK_Y);
+                    if (InputController.LeftTriggerDown)
+                    {
+                        InputController.SendKey(WindowsInput.Native.VirtualKeyCode.VK_K);
+                    }
+                    else
+                    {
+                        //Y
+                        InputController.SendKey(WindowsInput.Native.VirtualKeyCode.VK_Y);
+                    }
                 }
                 break;
                 case GamepadButtonFlags.LeftShoulder:
